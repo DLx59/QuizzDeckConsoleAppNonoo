@@ -16,7 +16,7 @@ public static class Program
         {
             var currentCard = deck.Pop();
             DisplayQuestion(currentCard);
-            var userAnswer = GetValidAnswer();
+            var userAnswer = GetValidAnswer(currentCard.Answers.Count);
 
             Console.WriteLine(userAnswer == currentCard.CorrectAnswer
                 ? "Correct!\n"
@@ -32,34 +32,34 @@ public static class Program
         deck.Push(new Card
         {
             Question = "Quel célèbre égyptologue a découvert le tombeau de Toutânkhamon ?",
-            Answers = new[] { "a) Jacques Cartier", "b) Howard Carter", "c) Marco Polo", "d) Napoléon Bonaparte" },
+            Answers = new List<string> { "a) Jacques Cartier", "b) Howard Carter", "c) Marco Polo", "d) Napoléon Bonaparte", "e) Dupont Foo" },
             CorrectAnswer = 'b'
         });
         deck.Push(new Card
         {
             Question = "Quelle est la plus grande chaîne de montagnes du monde ?",
-            Answers = new[] { "a) Les Andes", "b) Les Alpes", "c) Les Rocheuses", "d) L'Himalaya" },
+            Answers = new List<string> { "a) Les Andes", "b) Les Alpes", "c) Les Rocheuses", "d) L'Himalaya" },
             CorrectAnswer = 'd'
         });
         deck.Push(new Card
         {
             Question = "Quel écrivain français a écrit \"Les Misérables\" ?",
-            Answers = new[] { "a) Victor Hugo", "b) Gustave Flaubert", "c) Marcel Proust", "d) Albert Camus" },
+            Answers = new List<string> { "a) Victor Hugo", "b) Gustave Flaubert", "c) Marcel Proust", "d) Albert Camus" },
             CorrectAnswer = 'a'
         });
         return deck;
     }
 
-    private static char GetValidAnswer()
+    private static char GetValidAnswer(int numAnswers)
     {
-        char[] validAnswers = { 'a', 'b', 'c', 'd' };
+        var validAnswers = Enumerable.Range(0, numAnswers).ToDictionary(i => ((char)('a' + i)).ToString(), i => (char)('a' + i));
 
         while (true)
         {
-            Console.Write("Votre réponse (a, b, c, d) : ");
+            Console.Write($"Votre réponse ({string.Join(", ", validAnswers.Keys)}) : ");
             var input = Console.ReadLine()?.ToLower();
 
-            if (char.TryParse(input, out var userAnswer) && Array.Exists(validAnswers, answer => answer == userAnswer))
+            if (validAnswers.TryGetValue(input!, out var userAnswer))
             {
                 return userAnswer;
             }
@@ -70,14 +70,7 @@ public static class Program
 
     private static string GetAnswer(char answer)
     {
-        return answer switch
-        {
-            'a' => "\"a\"",
-            'b' => "\"b\"",
-            'c' => "\"c\"",
-            'd' => "\"d\"",
-            _ => ""
-        };
+        return $"\"{answer}\"";
     }
 
     private static void DisplayQuestion(Card card)
