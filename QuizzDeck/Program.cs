@@ -18,9 +18,9 @@ public static class Program
             DisplayQuestion(currentCard);
             var userAnswer = GetValidAnswer(currentCard.Answers.Count);
 
-            Console.WriteLine(userAnswer == currentCard.CorrectAnswer
+            Console.WriteLine(userAnswer - 1 == currentCard.CorrectAnswer
                 ? "Correct!\n"
-                : $"Faux! La réponse était {GetAnswer(currentCard.CorrectAnswer)}\n");
+                : $"Faux! La réponse était {GetAnswer(currentCard.CorrectAnswer + 1)}\n");
         }
 
         Console.WriteLine("Fin du quizz.");
@@ -32,27 +32,28 @@ public static class Program
         deck.Push(new Card
         {
             Question = "Quel célèbre égyptologue a découvert le tombeau de Toutânkhamon ?",
-            Answers = new List<string> { "Jacques Cartier", "Howard Carter", "Marco Polo", "Napoléon Bonaparte", "Dupont Foo" },
-            CorrectAnswer = 'b'
+            Answers = new List<string>
+                { "Jacques Cartier", "Howard Carter", "Marco Polo", "Napoléon Bonaparte", "Dupont Foo" },
+            CorrectAnswer = 1
         });
         deck.Push(new Card
         {
             Question = "Quelle est la plus grande chaîne de montagnes du monde ?",
             Answers = new List<string> { "Les Andes", "Les Alpes", "Les Rocheuses", "L'Himalaya" },
-            CorrectAnswer = 'd'
+            CorrectAnswer = 3
         });
         deck.Push(new Card
         {
             Question = "Quel écrivain français a écrit \"Les Misérables\" ?",
             Answers = new List<string> { "Victor Hugo", "Gustave Flaubert", "Marcel Proust", "Albert Camus" },
-            CorrectAnswer = 'a'
+            CorrectAnswer = 0
         });
         return deck;
     }
 
-    private static char GetValidAnswer(int numAnswers)
+    private static int GetValidAnswer(int numAnswers)
     {
-        var validAnswers = Enumerable.Range(0, numAnswers).ToDictionary(i => ((char)('a' + i)).ToString(), i => (char)('a' + i));
+        var validAnswers = Enumerable.Range(0, numAnswers).ToDictionary(i => (i + 1).ToString(), i => i + 1);
 
         while (true)
         {
@@ -68,7 +69,7 @@ public static class Program
         }
     }
 
-    private static string GetAnswer(char answer)
+    private static string GetAnswer(int answer)
     {
         return $"\"{answer}\"";
     }
@@ -79,7 +80,7 @@ public static class Program
         var i = 0;
         foreach (var answer in card.Answers)
         {
-            Console.WriteLine($"{(char)('a' + i)}) {answer}");
+            Console.WriteLine($"{i + 1}) {answer}");
             i++;
         }
     }
