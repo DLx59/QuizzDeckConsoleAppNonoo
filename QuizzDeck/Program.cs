@@ -32,19 +32,19 @@ public static class Program
         deck.Push(new Card
         {
             Question = "Quel célèbre égyptologue a découvert le tombeau de Toutânkhamon ?",
-            Answers = new List<string> { "a) Jacques Cartier", "b) Howard Carter", "c) Marco Polo", "d) Napoléon Bonaparte", "e) Dupont Foo" },
+            Answers = new List<string> { "Jacques Cartier", "Howard Carter", "Marco Polo", "Napoléon Bonaparte", "Dupont Foo" },
             CorrectAnswer = 'b'
         });
         deck.Push(new Card
         {
             Question = "Quelle est la plus grande chaîne de montagnes du monde ?",
-            Answers = new List<string> { "a) Les Andes", "b) Les Alpes", "c) Les Rocheuses", "d) L'Himalaya" },
+            Answers = new List<string> { "Les Andes", "Les Alpes", "Les Rocheuses", "L'Himalaya" },
             CorrectAnswer = 'd'
         });
         deck.Push(new Card
         {
             Question = "Quel écrivain français a écrit \"Les Misérables\" ?",
-            Answers = new List<string> { "a) Victor Hugo", "b) Gustave Flaubert", "c) Marcel Proust", "d) Albert Camus" },
+            Answers = new List<string> { "Victor Hugo", "Gustave Flaubert", "Marcel Proust", "Albert Camus" },
             CorrectAnswer = 'a'
         });
         return deck;
@@ -76,9 +76,11 @@ public static class Program
     private static void DisplayQuestion(Card card)
     {
         Console.WriteLine(card.Question);
+        var i = 0;
         foreach (var answer in card.Answers)
         {
-            Console.WriteLine(answer);
+            Console.WriteLine($"{(char)('a' + i)}) {answer}");
+            i++;
         }
     }
 }
